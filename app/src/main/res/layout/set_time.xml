@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              app:theme="@android:style/Theme.Holo.Light"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="请选择日期" />
 
     <DatePicker
+        android:layout_marginTop="8dp"
+        android:calendarViewShown="false"
         android:id="@+id/date_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="请选择时间" />
 
     <TimePicker
+        android:layout_marginTop="8dp"
         android:id="@+id/time_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

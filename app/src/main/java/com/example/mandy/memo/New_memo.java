@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +19,7 @@ import java.util.Calendar;
 
 
 
-public class New_memo extends Activity implements View.OnClickListener, View.OnTouchListener {
+public class New_memo extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
     private String value;   //接收由 MainActivity传过来的键值
     private Button save, delete;
     private EditText editText, settimeET;
