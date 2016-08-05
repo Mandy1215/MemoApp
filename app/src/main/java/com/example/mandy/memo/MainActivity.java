@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-
+//写得不错啊
 public class MainActivity extends AppCompatActivity {
 
    private Button new_memo;
