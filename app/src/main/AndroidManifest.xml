@@ -23,6 +23,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".Detials"
+            android:screenOrientation="portrait">
+
+        </activity>
+
     </application>
 
 
