@@ -41,12 +41,15 @@ public class MyAdapter extends BaseAdapter {
         linearLayout = (LinearLayout) inflater.inflate(R.layout.every_list, null);
         TextView contentTV = (TextView) linearLayout.findViewById(R.id.list_content);
         TextView timeTV = (TextView) linearLayout.findViewById(R.id.list_time);
+  //      TextView calculaTime = (TextView) linearLayout.findViewById(R.id.calculaTime);
         cursor.moveToPosition(position);
         String content = cursor.getString(cursor.getColumnIndex("content"));
         String time = cursor.getString(cursor.getColumnIndex("time"));
+  //      String calculatime =cursor.getString(cursor.getColumnIndex("calculaTime"));
 
         contentTV.setText(content);
         timeTV.setText(time);
+//        calculaTime.setText(calculatime);
         return linearLayout;
     }
 }

@@ -7,6 +7,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.MotionEvent;
@@ -15,8 +17,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import java.util.Calendar;
+import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class New_memo extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
@@ -25,6 +31,14 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
     private EditText editText, settimeET;
     private NoteDB noteDB;
     private SQLiteDatabase dbWriter;
+
+    private int i = 0 ;
+    private Timer timer=null;
+    private TimerTask timerTask = null ;
+    private long different ;
+    private Calendar cal ;
+    private Handler mHandler;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +51,6 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
         settimeET = (EditText) findViewById(R.id.settimeET);
         noteDB = new NoteDB(this);
         dbWriter = noteDB.getWritableDatabase();
-
         save.setOnClickListener(this);
         delete.setOnClickListener(this);
 
@@ -49,12 +62,47 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
         switch (v.getId()) {
             case R.id.save:
                 addDB();
+       //         calculaTime();
                 finish();
                 break;
             case R.id.delete:
                 finish();
                 break;
         }
+    }
+//输入时间和系统时间差
+    private void calculaTime() {
+        Date d1 = new Date(System.currentTimeMillis());
+        String inTime = editText.getText().toString();
+        Date d2 = new Date(inTime);
+        different = d2.getTime() -d1.getTime(); //这样得到的差值是微秒级
+        i = (int) (different /(1000));
+        long days = different / (1000 * 60 * 60 * 24);
+        long hours = (different - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+        long minutes = (different - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
+        String string = days + "天" + hours + "小时" + minutes + "分";
+        Toast.makeText(New_memo.this , string ,Toast.LENGTH_SHORT).show();
+        startTime();
+        mHandler = new Handler(){
+            public void handleMessage(Message mess) {
+               // startTime();
+            }
+        };
+
+    }
+
+    private void startTime() {
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                i--;
+                Message message = mHandler.obtainMessage();
+                message.arg1 = i;
+                mHandler.sendMessage(message);
+            }
+        };
+        timer.schedule(timerTask, 1000);
     }
 
     @Override
@@ -67,9 +115,10 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
             final TimePicker timePicker = (android.widget.TimePicker) view.findViewById(R.id.time_picker);
             builder.setView(view);
 
-            Calendar cal = Calendar.getInstance();
+            cal = Calendar.getInstance();
             cal.setTimeInMillis(System.currentTimeMillis());
-            datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), null);
+            datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH), null);
 
             timePicker.setIs24HourView(true);
             timePicker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
@@ -108,12 +157,13 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
         return true;
     }
 
-    //添加数据的方法
+  //添加数据的方法
     public void addDB() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(NoteDB.CONTENT, editText.getText().toString());
         contentValues.put(NoteDB.TIME, getTime());
-        dbWriter.insert(NoteDB.TABLE_NAME, null, contentValues);
+    //    contentValues.put(NoteDB.CALCULATIME ,);
+       dbWriter.insert(NoteDB.TABLE_NAME, null, contentValues);
     }
 
     //时间

@@ -10,6 +10,7 @@ public class NoteDB extends SQLiteOpenHelper {
     public static final String CONTENT = "content"; //内容
     public static final String ID = "_id"; //数据库的id
     public static final String TIME = "time"; //时间
+//    public static  final String  CALCULATIME= "calculaTime"; //倒计时
 
     public NoteDB(Context context) {
         super(context, "notes", null, 1);

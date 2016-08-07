@@ -10,6 +10,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button new_memo;
@@ -19,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private MyAdapter myAdapter;
     private NoteDB noteDB;
     private SQLiteDatabase dbReader;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
