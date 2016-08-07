@@ -70,7 +70,7 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
                 break;
         }
     }
-//输入时间和系统时间差
+/*//输入时间和系统时间差
     private void calculaTime() {
         Date d1 = new Date(System.currentTimeMillis());
         String inTime = editText.getText().toString();
@@ -103,7 +103,7 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
             }
         };
         timer.schedule(timerTask, 1000);
-    }
+    }*/
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
