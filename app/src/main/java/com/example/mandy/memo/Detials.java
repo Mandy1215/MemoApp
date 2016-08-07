@@ -67,9 +67,14 @@ public class Detials extends Activity implements View.OnClickListener {
         contentValue.put(NoteDB.CONTENT, newEditText);
         //    contentValues.put(NoteDB.CALCULATIME ,);
        // String[] args = {String.valueOf(newEditText)};
-        String where = "_id=" + NoteDB.ID;
+        /*
+        (int) update(String table, ContentValues values,
+        String whereClause, String[] whereArgs)
+         */
+        String whereClause = "_id=" + getIntent().getIntExtra(NoteDB.ID , 1) ;
+
         writer.update(NoteDB.TABLE_NAME, contentValue ,
-                 where , null);
+                 whereClause , null);
     }
 
     private void deletedetials() {
