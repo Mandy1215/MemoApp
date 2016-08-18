@@ -1,8 +1,11 @@
 package com.example.mandy.memo;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,18 +34,22 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
     private EditText editText, settimeET;
     private NoteDB noteDB;
     private SQLiteDatabase dbWriter;
+    private Calendar cal;
 
-    private int i = 0 ;
+   private int i = 0 ;
     private Timer timer=null;
     private TimerTask timerTask = null ;
     private long different ;
-    private Calendar cal ;
     private Handler mHandler;
+
+    private AlarmManager amanager;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_memo);
+
+        amanager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         value = getIntent().getStringExtra("flag");
         save = (Button) findViewById(R.id.save);
@@ -62,7 +69,8 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
         switch (v.getId()) {
             case R.id.save:
                 addDB();
-       //         calculaTime();
+              //  setAlarm();
+         //       calculaTime();
                 finish();
                 break;
             case R.id.delete:
@@ -70,8 +78,25 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
                 break;
         }
     }
-/*//输入时间和系统时间差
-    private void calculaTime() {
+
+   /* private void setAlarm() {
+        final Calendar currentTime = Calendar.getInstance();
+        new TimePickerDialog(New_memo.this, 0, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                PendingIntent pendingIntent = PendingIntent.getActivities(New_memo.this , 0 , null ,0);
+                currentTime.setTimeInMillis(System.currentTimeMillis());
+                currentTime.set(Calendar.HOUR, hourOfDay);
+                currentTime.set(Calendar.MINUTE, minute);
+                amanager.set(AlarmManager.RTC_WAKEUP , currentTime.getTimeInMillis() , pendingIntent);
+            }
+        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true).show();
+    }*/
+
+
+
+//输入时间和系统时间差
+  /*  private void calculaTime() {
         Date d1 = new Date(System.currentTimeMillis());
         String inTime = editText.getText().toString();
         Date d2 = new Date(inTime);
@@ -85,13 +110,13 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
         startTime();
         mHandler = new Handler(){
             public void handleMessage(Message mess) {
-               // startTime();
+                startTime();
             }
         };
 
-    }
+    }*/
 
-    private void startTime() {
+ /*   private void startTime() {
         timer = new Timer();
         timerTask = new TimerTask() {
             @Override
@@ -100,6 +125,11 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
                 Message message = mHandler.obtainMessage();
                 message.arg1 = i;
                 mHandler.sendMessage(message);
+                if (message.arg1 == 0){
+                    AlertDialog.Builder builderAlarm = new AlertDialog.Builder(New_memo.this);
+                    View alarmView = View.inflate(New_memo.this , R.layout.alarm ,null);
+                    builderAlarm.setView(alarmView);
+                }
             }
         };
         timer.schedule(timerTask, 1000);
@@ -157,13 +187,12 @@ public class New_memo extends AppCompatActivity implements View.OnClickListener,
         return true;
     }
 
-  //添加数据的方法
+    //添加数据的方法
     public void addDB() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(NoteDB.CONTENT, editText.getText().toString());
         contentValues.put(NoteDB.TIME, getTime());
-    //    contentValues.put(NoteDB.CALCULATIME ,);
-       dbWriter.insert(NoteDB.TABLE_NAME, null, contentValues);
+        dbWriter.insert(NoteDB.TABLE_NAME, null, contentValues);
     }
 
     //时间

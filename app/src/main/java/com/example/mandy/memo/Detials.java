@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * 备忘录详细页
+ */
 
 public class Detials extends Activity implements View.OnClickListener {
     private Button delete_detials, back_detials, change_detials;
